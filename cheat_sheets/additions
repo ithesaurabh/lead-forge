@@ -1,0 +1,7 @@
+Add a validation using Pino
+npm install pino pino-http pino-pretty
+
+run touch src/config/logger.ts 
+& touch src/middlewares/request-logger.ts
+
+npm install zod
