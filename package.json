@@ -1,0 +1,31 @@
+{
+  "name": "lead-forge",
+  "version": "1.0.0",
+  "description": "LeadForge is a modular Lead Management and Product CRM built with TypeScript, Express, Prisma, MySQL, and Paseto. It provides role-based access control (RBAC), lead lifecycle management, product catalog management, category organization, email automation, and audit-ready architecture for modern business workflows.",
+  "homepage": "https://github.com/ithesaurabh/lead-forge#readme",
+  "bugs": {
+    "url": "https://github.com/ithesaurabh/lead-forge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ithesaurabh/lead-forge.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "nodemon": "^3.1.14",
+    "prisma": "^7.8.0",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
