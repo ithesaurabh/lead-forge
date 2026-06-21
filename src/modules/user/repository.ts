@@ -82,6 +82,14 @@ const updateUser = async (data: UserUpdateInput) => {
   });
 };
 
+const deleteUser = async (id: string) => {
+  return prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+};
+
 const changePassword = async (data: changePasswordInput) => {
   return prisma.user.update({
     where: { email: data.email },
@@ -91,14 +99,4 @@ const changePassword = async (data: changePasswordInput) => {
   })
 }
 
-
-export default {
-  findByEmail,
-  findById,
-  createUser,
-  getUsers,
-  changeStatus,
-  updateUser,
-  changePassword,
-  getOneUser
-};
+export default { findByEmail, findById, createUser, getUsers, changeStatus, updateUser, changePassword, getOneUser, deleteUser };

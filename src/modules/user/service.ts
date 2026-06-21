@@ -77,5 +77,14 @@ const getOneUser = async (payload : onlyIdDto)=>{
   const user = await userRepository.getOneUser(payload.id);
   return user;
 }
+const deleteUser = async (payload : onlyIdDto)=>{
+  const user = await userRepository.findById(payload.id);
+  if(!user){
+    throw new ApiError(404, "User doesn't exist");
+  }
+  await userRepository.deleteUser(payload.id);
 
-export default { createUser, getUser, patchUser, udpateUser, changePassword, getOneUser};
+  return true;
+}
+
+export default { createUser, getUser, patchUser, udpateUser, changePassword, getOneUser, deleteUser};

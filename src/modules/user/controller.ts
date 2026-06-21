@@ -20,20 +20,16 @@ const getOneUser = async (req: Request<onlyIdDto, {}, {}>, res: Response) => {
   }
 
   return res.status(200).json({success: true,
-    message: "User data fetched Successfully",
+    message: "User data fetched successfully",
     data:user
   })
 }
 const deleteUser = async (req: Request<onlyIdDto, {}, {}>, res: Response) => {
-  const user = await userService.getOneUser(req.params);
+  await userService.deleteUser(req.params);
 
-  if(!user){
-    throw new ApiError(401, "User doesn't exist");
-  }
 
   return res.status(200).json({success: true,
-    message: "User deleted Successfully",
-    data:user
+    message: "User deleted successfully",
   })
 }
 
@@ -48,32 +44,29 @@ const createUser = async (req: Request<{}, {}, CreateUserDto>, res: Response ) =
 };
 
 const patchUser = async ( req: Request<{}, {}, PatchUserDto>, res: Response ) => {
-  const user = await userService.patchUser(req.body);
+  await userService.patchUser(req.body);
 
   return res.status(200).json({
     success: true,
-    message: "User patched successfully",
-    data: user,
+    message: "User status updated successfully",
   });
 };
 
 const changePassword = async ( req: Request<{}, {}, ChangePasswordUserDto>, res: Response ) => {
-  const user = await userService.changePassword(req.body);
+  await userService.changePassword(req.body);
 
   return res.status(200).json({
     success: true,
     message: "Password changed successfully",
-    data: user,
   });
 };
 
 const updateUser = async ( req: Request<{}, {}, UpdateUserDto>, res: Response ) => {
-  const user = await userService.udpateUser(req.body);
+  await userService.udpateUser(req.body);
 
   return res.status(200).json({
     success: true,
     message: "User updated successfully",
-    data: user,
   });
 };
 
