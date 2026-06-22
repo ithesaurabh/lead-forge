@@ -66,7 +66,7 @@ const updateRole = async (data: RoleUpdateInput) => {
   return prisma.role.update({
     where: { id: data.id },
     data: {
-      name : data.name,
+      name: data.name,
       description: data.description,
     }
   });
@@ -86,12 +86,19 @@ const getOneRole = async (id: string) => {
 };
 
 const deleteRole = async (id: string) => {
+  await prisma.rolePermission.deleteMany({
+    where: {
+      roleId: id,
+    },
+  });
+
   return prisma.role.delete({
     where: {
       id,
     },
   });
 };
+
 const assignPermissions = async (roleId: string, permissionIds: string[]) => {
   await prisma.rolePermission.deleteMany({
     where: {
@@ -107,4 +114,4 @@ const assignPermissions = async (roleId: string, permissionIds: string[]) => {
   });
 };
 
-export default { findByNameExceptThis,findById, findByName, getRoles, createRole, updateRole, getOneRole, deleteRole, assignPermissions, findByIdWithPermissions };
+export default { findByNameExceptThis, findById, findByName, getRoles, createRole, updateRole, getOneRole, deleteRole, assignPermissions, findByIdWithPermissions };
