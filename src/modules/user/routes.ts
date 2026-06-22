@@ -11,6 +11,6 @@ router.post("/", validate({body: createUserSchema}),userController.createUser);
 router.put("/", validate({body: updateUserSchema}),userController.updateUser);
 router.patch("/", validate({body: patchUserSchema}),userController.patchUser); //to change the status
 router.patch("/change-password", validate({body: changePasswordUserSchema}),userController.changePassword); //to change the password
-router.delete("/:id", validate({params: onlyIdSchema}),userController.deleteUser); //to change the password
+router.delete("/:id", validate({params: onlyIdSchema}),userController.deleteUser); //to delete the user
 
-export default router;
+export default router;  

@@ -51,6 +51,16 @@ const findByEmail = async (email: string) => {
     where: { email },
   });
 };
+const findByEmailExceptThis = async (email: string, id: string) => {
+  return prisma.user.findFirst({
+    where: {
+      email,
+      id: {
+        not: id,
+      },
+    },
+  });
+};
 
 const findById = async (id: string) => {
   return prisma.user.findUnique({
@@ -58,7 +68,7 @@ const findById = async (id: string) => {
   });
 };
 
-const createUser = async (data: Prisma.UserCreateInput) => {
+const createUser = async (data: Prisma.userCreateInput) => {
   return prisma.user.create({
     data
   });
@@ -99,4 +109,4 @@ const changePassword = async (data: changePasswordInput) => {
   })
 }
 
-export default { findByEmail, findById, createUser, getUsers, changeStatus, updateUser, changePassword, getOneUser, deleteUser };
+export default { findByEmail, findById, createUser, getUsers, changeStatus, updateUser, changePassword, getOneUser, deleteUser, findByEmailExceptThis };

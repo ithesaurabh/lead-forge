@@ -18,7 +18,8 @@
     "dev": "nodemon  --watch .env  --watch src --ext ts --exec tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "generate": "node cheat_sheets/generate-module.ts"
+    "generate": "node cheat_sheets/generate-module.ts",
+    "seed:permissions": "tsx src/database/seeds/permission.seed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

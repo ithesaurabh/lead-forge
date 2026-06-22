@@ -6,6 +6,10 @@ import ApiError from "../../utils/ApiError.js";
 const getUser = async (req: Request, res: Response) => {
   const user = await userService.getUser();
 
+  if(user.length === 0) {
+    throw new ApiError(404, "No data found");
+  }
+  
   return res.status(200).json({success: true,
     message: "Users fetched successfully",
     data: user,
@@ -26,7 +30,6 @@ const getOneUser = async (req: Request<onlyIdDto, {}, {}>, res: Response) => {
 }
 const deleteUser = async (req: Request<onlyIdDto, {}, {}>, res: Response) => {
   await userService.deleteUser(req.params);
-
 
   return res.status(200).json({success: true,
     message: "User deleted successfully",

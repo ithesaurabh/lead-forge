@@ -2,12 +2,17 @@ import { Request, Response, NextFunction } from "express";
 import env from "../config/env.js";
 import ApiError from "../utils/ApiError.js";
 import { Prisma } from "../generated/prisma/client.js";
+import { ZodError } from "zod";
+
 const errorMiddleware = (
     err: any,
     _req: Request,
     res: Response,
     _next: NextFunction
 ) => {
+    if (err instanceof ZodError) {
+        err = new ApiError(400, err.issues[0]?.message ?? "Validation failed");
+    }
 
     // Prisma errors
     if (err instanceof Prisma.PrismaClientKnownRequestError) {

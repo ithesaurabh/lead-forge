@@ -27,7 +27,6 @@ const createUser = async (payload: CreateUserDto) => {
 
 const patchUser = async (payload: PatchUserDto) => {
   const existingUser = await userRepository.findById(payload.id);
-  console.log(existingUser)
   if (!existingUser) {
     throw new ApiError(401, "User doesn't exist");
   }
@@ -61,6 +60,10 @@ const udpateUser = async (payload: UpdateUserDto) => {
     throw new ApiError(401, "User doesn't exist");
   }
 
+  const isMailNotUnique = payload.email ? await userRepository.findByEmailExceptThis(payload.email, payload.id) : false;
+  if(isMailNotUnique){
+    throw new ApiError(401, "Email already exists");
+  }
   return userRepository.updateUser({
     id : payload.id,
     firstName : payload.firstName,
