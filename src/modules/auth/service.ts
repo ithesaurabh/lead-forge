@@ -9,7 +9,7 @@ const login = async (email: string, password: string) => {
     const user = await authRepository.findUserByEmail(email);
 
     if (!user) {
-        throw new ApiError(401, "Invalid email or password.");
+        throw new ApiError(400, "Invalid email or password.");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -18,7 +18,7 @@ const login = async (email: string, password: string) => {
     );
 
     if (!isPasswordValid) {
-        throw new ApiError(401, "Invalid email or password.");
+        throw new ApiError(400, "Invalid email or password.");
     }
 
     const token = await V4.sign(

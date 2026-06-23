@@ -123,4 +123,23 @@ const changePassword = async (data: changePasswordInput) => {
   })
 }
 
-export default { findByEmail, findById, createUser, getUsers, changeStatus, updateUser, changePassword, getOneUser, deleteUser, findByEmailExceptThis };
+const findByIdWithPermissions = async (id: string) => {
+  return prisma.user.findUnique({
+    where: { id },
+
+    include: {
+      role: {
+        include: {
+          rolePermissions: {
+            include: {
+              permission: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
+
+export default { findByEmail, findById, createUser, getUsers, changeStatus, updateUser, changePassword, getOneUser, deleteUser, findByEmailExceptThis, findByIdWithPermissions };

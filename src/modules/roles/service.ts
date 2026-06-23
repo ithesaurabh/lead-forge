@@ -14,7 +14,7 @@ const createRole = async (payload: CreateRoleDto) => {
   );
 
   if (existingRole) {
-    throw new ApiError(401, "Role already exists");
+    throw new ApiError(400, "Role already exists");
   }
 
   return roleRepository.createRole({
@@ -27,12 +27,12 @@ const updateRole = async (payload: UpdateRoleDto) => {
   const existingRole = await roleRepository.findById(payload.id);
 
   if (!existingRole) {
-    throw new ApiError(401, "Role doesn't exist");
+    throw new ApiError(400, "Role doesn't exist");
   }
 
   const isNameNotUnique = payload.name ? await roleRepository.findByNameExceptThis(payload.name, payload.id) : false;
   if(isNameNotUnique){
-    throw new ApiError(401, "Role name already exists");
+    throw new ApiError(400, "Role name already exists");
   }
   return roleRepository.updateRole({
     id : payload.id,
@@ -60,12 +60,12 @@ const assignPermissions = async (roleId: string, payload: AssignPermissionsDto) 
   const role = await roleRepository.findById(roleId);
 
   if (!role) {
-    throw new ApiError(401, "Role not found");
+    throw new ApiError(400, "Role not found");
   }
 
   const permissions = await permissionRepository.findByIds(payload.permissionIds);
   if (permissions.length !== payload.permissionIds.length) {
-    throw new ApiError(401,"One or more permissions do not exist");
+    throw new ApiError(400,"One or more permissions do not exist");
   }
 
   await roleRepository.assignPermissions(roleId, payload.permissionIds);

@@ -10,12 +10,12 @@ const createUser = async (payload: CreateUserDto) => {
   );
 
   if (existingUser) {
-    throw new ApiError(401, "Email already exists");
+    throw new ApiError(400, "Email already exists");
   }
 
   const validRole = payload.roleId ?  await roleRepository.findById(payload.roleId) : "";
   if(!validRole){
-    throw new ApiError(401, "Not a valid role");
+    throw new ApiError(400, "Not a valid role");
   } 
 
   const passwordHash = await bcrypt.hash(
@@ -36,7 +36,7 @@ const createUser = async (payload: CreateUserDto) => {
 const patchUser = async (payload: PatchUserDto) => {
   const existingUser = await userRepository.findById(payload.id);
   if (!existingUser) {
-    throw new ApiError(401, "User doesn't exist");
+    throw new ApiError(400, "User doesn't exist");
   }
 
   return userRepository.changeStatus({
@@ -49,7 +49,7 @@ const changePassword = async (payload: ChangePasswordUserDto) => {
   const existingUser = await userRepository.findByEmail(payload.email);
 
   if (!existingUser) {
-    throw new ApiError(401, "User doesn't exist");
+    throw new ApiError(400, "User doesn't exist");
   }
   const passwordHash = await bcrypt.hash(
     payload.newPassword,
@@ -65,17 +65,17 @@ const udpateUser = async (payload: UpdateUserDto) => {
   const existingUser = await userRepository.findById(payload.id);
 
   if (!existingUser) {
-    throw new ApiError(401, "User doesn't exist");
+    throw new ApiError(400, "User doesn't exist");
   }
 
   const isMailNotUnique = payload.email ? await userRepository.findByEmailExceptThis(payload.email, payload.id) : false;
   if(isMailNotUnique){
-    throw new ApiError(401, "Email already exists");
+    throw new ApiError(400, "Email already exists");
   }
 
   const isRoleValid = payload.roleId ? await roleRepository.findById(payload.roleId) : false;
   if(!isRoleValid){
-    throw new ApiError(401, "Role does not exist");
+    throw new ApiError(400, "Role does not exist");
   }
   return userRepository.updateUser({
     id : payload.id,
