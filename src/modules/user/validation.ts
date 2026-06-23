@@ -21,6 +21,8 @@ export const createUserSchema = z.object({
     .string()
     .min(8, "Password must be at least 8 characters")
     .max(100, "Password cannot exceed 100 characters"),
+
+  roleId: z.string().uuid("Invalid role id").optional()
 });
 
 export const onlyIdSchema = z.object({
@@ -57,4 +59,6 @@ export const updateUserSchema = z.object({
   email: z
     .email("Invalid email address")
     .toLowerCase().optional(),
+  
+  roleId: z.string().uuid("Invalid role id").optional()
 });

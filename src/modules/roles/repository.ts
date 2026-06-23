@@ -86,12 +86,6 @@ const getOneRole = async (id: string) => {
 };
 
 const deleteRole = async (id: string) => {
-  await prisma.rolePermission.deleteMany({
-    where: {
-      roleId: id,
-    },
-  });
-
   return prisma.role.delete({
     where: {
       id,

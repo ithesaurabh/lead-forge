@@ -12,6 +12,7 @@ type UserUpdateInput = {
   firstName?: string;
   lastName?: string;
   email?: string;
+  roleId?: string;
 };
 
 type changePasswordInput = {
@@ -27,6 +28,12 @@ const getUsers = async () => {
       lastName: true,
       email: true,
       isActive: true,
+      role: {
+        select: {
+          id: true,
+          name: true,
+        }
+      }
     },
   });
 };
@@ -42,6 +49,12 @@ const getOneUser = async (id: string) => {
       lastName: true,
       email: true,
       isActive: true,
+      role: {
+        select: {
+          id: true,
+          name: true,
+        }
+      }
     },
   });
 };
@@ -87,7 +100,8 @@ const updateUser = async (data: UserUpdateInput) => {
     data: {
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email
+      email: data.email,
+      roleId: data.roleId
     }
   });
 };
