@@ -77,6 +77,11 @@ const findById = async (id: string) => {
     where: { id },
   });
 };
+const findActiveById = async (id: string) => {
+  return prisma.product.findUnique({
+    where: { id, isActive: true },
+  });
+};
 
 const createProduct = async (data: Prisma.ProductCreateInput) => {
   return prisma.product.create({
@@ -112,4 +117,4 @@ const deleteProduct = async (id: string) => {
   });
 };
 
-export default { findBySlug, findById, getProduct,  getOneProduct, createProduct, changeStatus, updateProduct, deleteProduct, findByNameExceptThis };
+export default { findBySlug, findById, getProduct,  getOneProduct, createProduct, changeStatus, updateProduct, deleteProduct, findByNameExceptThis, findActiveById };

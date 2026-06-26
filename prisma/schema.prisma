@@ -89,7 +89,50 @@ model Product {
   tags        Json?
 
   isActive    Boolean  @default(true)
+  
+  leads       Lead[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+enum LeadType {
+  NEWSLETTER
+  CONTACT_US
+  RFQ
+}
+
+enum LeadStatus {
+  NEW
+  IN_PROGRESS
+  QUALIFIED
+  CLOSED
+  REJECTED
+}
+
+model Lead {
+  id        String      @id @default(uuid())
+
+  fullName  String
+  phone     String?
+  email     String
+  address   String?     @db.LongText
+  message   String?     @db.LongText
+
+  type      LeadType
+  status    LeadStatus  @default(NEW)
+
+  productId String?
+  product   Product?    @relation(fields: [productId], references: [id])
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  deletedAt DateTime?
+
+  @@index([type])
+  @@index([status])
+  @@index([productId])
+  @@index([email])
+  @@index([phone])
+  @@index([deletedAt])
 }
