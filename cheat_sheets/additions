@@ -5,3 +5,14 @@ run touch src/config/logger.ts
 & touch src/middlewares/request-logger.ts
 
 npm install zod
+
+
+//Notes:
+
+For the APIs of categories, it will have an admin condition,
+if the user is admin, then it will show all data without any status filters;
+This will be valid for category, products
+
+products will have a faq html column
+
+also for leads, it will have a soft delete feature, with some special columns, like which page, like newsletter, contact_us, rfq;

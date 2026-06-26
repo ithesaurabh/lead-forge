@@ -58,3 +58,38 @@ model RolePermission {
 
   @@id([roleId, permissionId])
 }
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.LongText
+
+  image       String?
+  tags        Json?
+
+  isActive    Boolean  @default(true)
+
+  products    Product[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+
+  categories  Category[]
+
+  description String?  @db.LongText
+
+  images      Json?
+  tags        Json?
+
+  isActive    Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

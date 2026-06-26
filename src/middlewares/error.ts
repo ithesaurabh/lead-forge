@@ -49,7 +49,8 @@ const errorMiddleware = (
     }
 
     if (err instanceof Prisma.PrismaClientValidationError) {
-        err = new ApiError(400, "Invalid request payload.");
+        // err = new ApiError(400, "Invalid request payload.");
+        err = new ApiError(400,err.message);
     }
 
     if (err instanceof Prisma.PrismaClientUnknownRequestError) {

@@ -12,6 +12,10 @@ const login = async (email: string, password: string) => {
         throw new ApiError(400, "Invalid email or password.");
     }
 
+    if(!user.isActive){
+        throw new ApiError(400, "Your account is inactive. Please contact admin.");
+    }
+
     const isPasswordValid = await bcrypt.compare(
         password,
         user.passwordHash
