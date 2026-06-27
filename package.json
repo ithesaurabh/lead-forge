@@ -19,7 +19,8 @@
     "worker": "tsx watch src/redis/bullmq/email.worker.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "generate": "node cheat_sheets/generate-module.ts",
+    "generate": "node setup/generate-module.ts",
+    "generate-keys": "node setup/generate-keys.ts",
     "seed:permissions": "tsx src/database/seeds/permission.seed.ts"
   },
   "devDependencies": {
