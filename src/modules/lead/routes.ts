@@ -7,10 +7,10 @@ import { createLeadSchema, patchLeadSchema, onlyIdSchema } from "./validation.js
 
 const router = Router();
 
-router.get("/", leadController.getLead);
-router.get("/:id", validate({params: onlyIdSchema}),leadController.getOneLead);
-router.post("/",  validate({body: createLeadSchema}),leadController.createLead);
-router.patch("/", validate({body: patchLeadSchema}),leadController.patchLead); 
-router.delete("/:id", validate({params: onlyIdSchema}),leadController.deleteLead); 
+router.get("/", authenticate, authorize("lead.read"), leadController.getLead);
+router.get("/:id", authenticate, authorize("lead.read"), validate({ params: onlyIdSchema }), leadController.getOneLead);
+router.post("/", validate({ body: createLeadSchema }), leadController.createLead);
+router.patch("/", authenticate, authorize("lead.update"), validate({ body: patchLeadSchema }), leadController.patchLead);
+router.delete("/:id", authenticate, authorize("lead.delete"), validate({ params: onlyIdSchema }), leadController.deleteLead);
 
 export default router;  

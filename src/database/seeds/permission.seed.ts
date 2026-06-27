@@ -108,6 +108,10 @@ const permissions = [
     key: "category.delete",
     description: "Delete categories",
   },
+  {
+    key: "upload.create",
+    description: "Upload files",
+  }
 ];
 
 async function seedPermissions() {

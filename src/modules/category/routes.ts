@@ -7,11 +7,11 @@ import { createCategorySchema, patchCategorySchema, updateCategorySchema, onlyId
 
 const router = Router();
 
-router.get("/", categoryController.getCategory);
-router.get("/:id", validate({params: onlyIdSchema}),categoryController.getOneCategory);
-router.post("/",  validate({body: createCategorySchema}),categoryController.createCategory);
-router.put("/", validate({body: updateCategorySchema}),categoryController.updateCategory);
-router.patch("/", validate({body: patchCategorySchema}),categoryController.patchCategory); 
-router.delete("/:id", validate({params: onlyIdSchema}),categoryController.deleteCategory); 
+router.get("/", authenticate, authorize("category.read"), categoryController.getCategory);
+router.get("/:id", authenticate, authorize("category.read"), validate({ params: onlyIdSchema }), categoryController.getOneCategory);
+router.post("/", authenticate, authorize("category.create"), validate({ body: createCategorySchema }), categoryController.createCategory);
+router.put("/", authenticate, authorize("category.update"), validate({ body: updateCategorySchema }), categoryController.updateCategory);
+router.patch("/", authenticate, authorize("category.update"), validate({ body: patchCategorySchema }), categoryController.patchCategory);
+router.delete("/:id", authenticate, authorize("category.delete"), validate({ params: onlyIdSchema }), categoryController.deleteCategory);
 
 export default router;  

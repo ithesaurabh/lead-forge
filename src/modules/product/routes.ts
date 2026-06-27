@@ -7,11 +7,11 @@ import { createProductSchema, patchProductSchema, updateProductSchema, onlyIdSch
 
 const router = Router();
 
-router.get("/", productController.getProduct);
-router.get("/:id", validate({params: onlyIdSchema}),productController.getOneProduct);
-router.post("/",  validate({body: createProductSchema}),productController.createProduct);
-router.put("/", validate({body: updateProductSchema}),productController.updateProduct);
-router.patch("/", validate({body: patchProductSchema}),productController.patchProduct); 
-router.delete("/:id", validate({params: onlyIdSchema}),productController.deleteProduct); 
+router.get("/",authenticate, authorize("product.read"), productController.getProduct);
+router.get("/:id",authenticate, authorize("product.read"), validate({params: onlyIdSchema}),productController.getOneProduct);
+router.post("/", authenticate, authorize("product.create"), validate({body: createProductSchema}),productController.createProduct);
+router.put("/",authenticate, authorize("product.update"), validate({body: updateProductSchema}),productController.updateProduct);
+router.patch("/", authenticate, authorize("product.update"), validate({body: patchProductSchema}),productController.patchProduct); 
+router.delete("/:id", authenticate, authorize("product.delete"), validate({params: onlyIdSchema}),productController.deleteProduct); 
 
 export default router;  
