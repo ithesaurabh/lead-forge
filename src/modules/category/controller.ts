@@ -5,10 +5,6 @@ import ApiError from "../../utils/ApiError.js";
 
 const getCategory = async (req: Request, res: Response) => {
   const category = await service.getCategory();
-
-  if(category.length === 0) {
-    throw new ApiError(404, "No data found");
-  }
   
   return res.status(200).json({success: true,
     message: "Categories fetched successfully",

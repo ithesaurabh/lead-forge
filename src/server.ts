@@ -1,6 +1,6 @@
 import app from "./app.js";
 import env from "./config/env.js";
-import redis from "./utils/redis/redis.js";
+import redis from "./redis/cache/redis.js";
 
 const startServer = async () => {
   try {

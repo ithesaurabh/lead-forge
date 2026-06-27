@@ -3,9 +3,9 @@ import type { CreateCategoryDto, UpdateCategoryDto, PatchCategoryDto, onlyIdDto 
 import ApiError from "../../utils/ApiError.js";
 import repository from "./repository.js";
 import slugify from "../../utils/slugify.js";
-import refreshCategoriesCache from "../../utils/redis/refreshCategoriesCache.js";
+import refreshCategoriesCache from "../../redis/cache/refreshCategoriesCache.js";
 import { CACHE_KEYS } from "../../constants/cache.js";
-import redis from "../../utils/redis/redis.js";
+import redis from "../../redis/cache/redis.js";
 
 const createCategory = async (payload: CreateCategoryDto) => {
   const slug = slugify(payload.name);

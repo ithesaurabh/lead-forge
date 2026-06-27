@@ -4,9 +4,9 @@ import ApiError from "../../utils/ApiError.js";
 import repository from "./repository.js";
 import categoryRepository from "../category/repository.js";
 import slugify from "../../utils/slugify.js";
-import redis from "../../utils/redis/redis.js";
+import redis from "../../redis/cache/redis.js";
 import { CACHE_KEYS } from "../../constants/cache.js";
-import refreshProductsCache from "../../utils/redis/refreshProductsCache.js";
+import refreshProductsCache from "../../redis/cache/refreshProductsCache.js";
 
 const createProduct = async (payload: CreateProductDto) => {
   const slug = slugify(payload.name);
