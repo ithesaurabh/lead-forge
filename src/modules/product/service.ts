@@ -4,6 +4,9 @@ import ApiError from "../../utils/ApiError.js";
 import repository from "./repository.js";
 import categoryRepository from "../category/repository.js";
 import slugify from "../../utils/slugify.js";
+import redis from "../../utils/redis/redis.js";
+import { CACHE_KEYS } from "../../constants/cache.js";
+import refreshProductsCache from "../../utils/redis/refreshProductsCache.js";
 
 const createProduct = async (payload: CreateProductDto) => {
   const slug = slugify(payload.name);
@@ -29,6 +32,9 @@ const createProduct = async (payload: CreateProductDto) => {
     tags: payload.tags,
     slug: slug,
   });
+
+  await refreshProductsCache();
+
   return await repository.getOneProduct(product.id);
 };
 
@@ -38,11 +44,12 @@ const patchProduct = async (payload: PatchProductDto) => {
   if (!existingProduct) {
     throw new ApiError(400, "Product doesn't exist");
   }
-
-  return repository.changeStatus({
+  const patched = await repository.changeStatus({
     id: payload.id,
     isActive: payload.newStatus,
   });
+  await refreshProductsCache();
+  return patched;
 };
 
 
@@ -58,7 +65,7 @@ const udpateProduct = async (payload: UpdateProductDto) => {
     throw new ApiError(400, "Name already exists");
   }
 
-  return repository.updateProduct({
+  const updated = await repository.updateProduct({
     id: payload.id,
     name: payload.name,
     description: payload.description ? sanitizeRichText(payload.description) : undefined,
@@ -70,10 +77,25 @@ const udpateProduct = async (payload: UpdateProductDto) => {
     images: payload.images,
     tags: payload.tags
   });
+
+  await refreshProductsCache();
+  return updated;
 };
 
 const getProduct = async () => {
+
+  const cachedProduct = await redis.get(CACHE_KEYS.PRODUCTS);
+
+  if (cachedProduct) {
+    return JSON.parse(cachedProduct);
+  }
+
   const product = await repository.getProduct();
+
+  if (product.length === 0) {
+    throw new ApiError(404, "No data found");
+  }
+  await refreshProductsCache();
   return product;
 }
 const getOneProduct = async (payload: onlyIdDto) => {
@@ -89,7 +111,7 @@ const deleteProduct = async (payload: onlyIdDto) => {
     throw new ApiError(404, "Product doesn't exist");
   }
   await repository.deleteProduct(payload.id);
-
+  await refreshProductsCache();
   return true;
 }
 

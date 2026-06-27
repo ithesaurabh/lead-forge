@@ -6,10 +6,6 @@ import ApiError from "../../utils/ApiError.js";
 const getProduct = async (req: Request, res: Response) => {
   const product = await service.getProduct();
 
-  if(product.length === 0) {
-    throw new ApiError(404, "No data found");
-  }
-  
   return res.status(200).json({success: true,
     message: "Products fetched successfully",
     data: product,
