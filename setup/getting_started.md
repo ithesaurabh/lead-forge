@@ -1,347 +1,330 @@
-# TypeScript + Express + Prisma Backend Setup Guide
+# 🔥LEADFORGE SET UP GUIDE
 
-## 1. Initialize Project
+<img src="banner.png" alt="banner" width="368" />\# Getting started
 
-```bash
-npm init -y
-```
+This guide walks you through setting up **LeadForge** locally.
 
----
+## Prerequisites
 
-## 2. Install TypeScript
+Install the following before you begin:
 
-```bash
-npm install typescript -D
-```
-
-This installs the TypeScript compiler (`tsc`).
-
-Verify installation:
-
-```bash
-npx tsc --version
-```
-
-> `npx` executes local npm binaries without requiring a global installation.
-
-Initialize TypeScript configuration:
-
-```bash
-npx tsc --init
-```
-
----
-
-## 3. Configure TypeScript
-
-Replace the entire contents of `tsconfig.json` with:
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
-}
-```
-
-### Explanation
-
-| Option | Purpose |
+| Software | Recommended version |
 | --- | --- |
-| target | JavaScript version to generate |
-| module | Controls import/export behavior |
-| moduleResolution | Controls how imports are resolved |
-| rootDir | Source code directory |
-| outDir | Compiled JavaScript output directory |
-| strict | Enables strict type checking |
-| esModuleInterop | Better compatibility with CommonJS packages |
-| forceConsistentCasingInFileNames | Prevents case-sensitivity issues between Windows and Linux |
-| skipLibCheck | Skips type checking for external library typings |
+| Node.js | &gt;= 22.x |
+| npm | Latest |
+| MySQL | &gt;= 8.0 |
+| Redis | &gt;= 7 |
+| Git | Latest |
 
----
-
-## 4. Install Express
+Verify your installation:
 
 ```bash
-npm install express
+node -v
+npm -v
+mysql --version
+redis-server --version
 ```
 
-Install development dependencies:
+---
+
+## 1) Clone the repository
 
 ```bash
-npm install -D @types/express tsx nodemon
-```
-
-### Packages
-
-| Package | Purpose |
-| --- | --- |
-| @types/express | Type definitions for Express |
-| tsx | Run TypeScript files directly |
-| nodemon | Automatically restart server on file changes |
-
----
-
-# Target Architecture
-
-| Layer | Responsibility |
-| --- | --- |
-| Routes | URL definitions |
-| Controllers | Handle HTTP request/response |
-| Services | Business logic |
-| Repositories | Database queries |
-| Prisma | ORM access |
-| Middleware | Shared request processing |
-| Validators | Request validation |
-| Config | Environment/app configuration |
-| Utils | Reusable helper functions |
-| Types | Shared typings/interfaces |
-
----
-
-# Recommended Folder Structure
-
-```text
-src/
-│
-├── app.ts
-├── server.ts
-│
-├── config/
-│   ├── env.ts
-│   └── db.ts
-│
-├── modules/
-│   └── user/
-│       ├── controller.ts
-│       ├── service.ts
-│       ├── repository.ts
-│       ├── routes.ts
-│       ├── validation.ts
-│       ├── types.ts
-│       └── index.ts
-│
-├── middlewares/
-│   ├── error.ts
-│   └── not-found.ts
-│
-├── utils/
-│   └── api-response.ts
-│
-├── types/
-│   └── express.d.ts
-│
-└── prisma/
-    └── client.ts
+git clone https://github.com/ithesaurabh/lead-forge.git
+cd lead-forge
 ```
 
 ---
 
-# Generate Folder Structure
-
-Run the following command from the project root:
+## 2) Install dependencies
 
 ```bash
-mkdir -p src/config \
-src/modules/user \
-src/middlewares \
-src/utils \
-src/types \
-src/prisma && \
-
-touch src/app.ts \
-src/server.ts \
-src/config/env.ts \
-src/config/db.ts \
-src/modules/user/controller.ts \
-src/modules/user/service.ts \
-src/modules/user/repository.ts \
-src/modules/user/routes.ts \
-src/modules/user/validation.ts \
-src/modules/user/types.ts \
-src/modules/user/index.ts \
-src/middlewares/error.ts \
-src/middlewares/not-found.ts \
-src/utils/api-response.ts \
-src/types/express.d.ts \
-src/prisma/client.ts
+npm install
 ```
 
 ---
 
-# Environment Variables
+## 3) Create the environment file
 
-Install dotenv:
+Create a `.env` file in the project root and add the following:
 
-```bash
-npm install dotenv
+```
+####################################
+# Server
+####################################
+PORT=5000
+NODE_ENV=development
+
+####################################
+# Database
+####################################
+DATABASE_URL="mysql://username:password@localhost:3306/lead_forge"
+
+####################################
+# AWS S3
+####################################
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
+AWS_BUCKET_NAME=
+
+####################################
+# Redis
+####################################
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+####################################
+# SMTP
+####################################
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USER=
+SMTP_PASS=
+SMTP_FROM=
 ```
 
-Load environment variables inside:
+> Fill in all required variables before running the application.
 
-```text
-src/config/env.ts
+---
+
+## 4) Generate Paseto keys
+
+LeadForge uses **Paseto** instead of JWT. Generate a new key pair:
+
+```bash
+npm run generate-keys
 ```
 
 ---
 
-# Application Bootstrap
+## 5) Create the database
 
-Implement:
+Create a MySQL database:
 
-```text
-src/app.ts
-src/server.ts
+```sql
+CREATE DATABASE lead_forge;
 ```
-
-After implementation, verify the application starts correctly before proceeding.
 
 ---
 
-# Prisma Setup
+## 6) Run Prisma migrations
 
-## Install Prisma CLI
-
-```bash
-npm install prisma -D
-```
-
-Provides commands such as:
+Generate the Prisma Client:
 
 ```bash
-npx prisma init
-npx prisma migrate dev
 npx prisma generate
-npx prisma studio
 ```
 
----
-
-## Install Prisma Client
+Run migrations:
 
 ```bash
-npm install @prisma/client
+npx prisma migrate dev
 ```
-
-This is the runtime ORM client used by the application.
 
 ---
 
-## Initialize Prisma
+## 7) Seed initial data
+
+Seed permissions:
 
 ```bash
-npx prisma init
+npm run seed:permissions
 ```
 
-Creates:
-
-```text
-prisma/
-└── schema.prisma
-
-.env
-```
-
-### Important
-
-Do **not** add the database URL directly into the datasource object inside `schema.prisma`.
-
-Use environment variables instead.
-
----
-
-# Create First Model
-
-Inside `prisma/schema.prisma`:
-
-```prisma
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  createdAt DateTime @default(now())
-}
-```
-
----
-
-# Run Initial Migration
+Create a super admin user:
 
 ```bash
-npx prisma migrate dev --name init
+npm run seed:super-admin
 ```
-
-This:
-
-- Creates migration files
-- Updates the database schema
-- Generates the Prisma Client
 
 ---
 
-# Reset Database (Development)
+## 8) Start Redis
 
-If the database schema and migration history become out of sync:
+BullMQ requires Redis.
+
+If Redis is installed locally, start it:
+
+```bash
+redis-server
+```
+
+Verify Redis is responding:
+
+```bash
+redis-cli ping
+```
+
+Expected output:
+
+```
+PONG
+```
+
+---
+
+## 9) Start the email worker
+
+BullMQ processes email jobs through a dedicated worker. Start it in a separate terminal:
+
+```bash
+npm run worker
+```
+
+---
+
+## 10) Start the API server
+
+```bash
+npm run dev
+```
+
+The server will be available at:
+
+```
+http://localhost:5000
+```
+
+---
+
+## Available scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start development server |
+| `npm run worker` | Start BullMQ email worker |
+| `npm run build` | Compile TypeScript |
+| `npm start` | Run compiled application |
+| `npm run generate` | Generate a new module scaffold |
+| `npm run generate-keys` | Generate Paseto key pair |
+| `npm run seed:permissions` | Seed RBAC permissions |
+| `npm run seed:super-admin` | Create super admin user |
+
+---
+
+## Running in development
+
+You’ll typically run **two to three terminals**:
+
+1. **API server**
+
+   ```bash
+   npm run dev
+   ```
+
+2. **Email worker**
+
+   ```bash
+   npm run worker
+   ```
+
+3. **Redis (optional)**
+
+   ```bash
+   redis-server
+   ```
+
+   Only needed if Redis isn’t already running as a background service.
+
+---
+
+## Common issues
+
+### Prisma client out of sync
+
+```bash
+npx prisma generate
+```
+
+### Migration issues
 
 ```bash
 npx prisma migrate reset
 ```
 
-> Warning: This deletes all data in the database.
+> **Warning:** This deletes all database data.
+
+### Redis connection error
+
+Verify Redis is running and reachable:
+
+```bash
+redis-cli ping
+```
+
+Expected:
+
+```
+PONG
+```
+
+### SMTP emails not sending
+
+Confirm the following:
+
+- SMTP credentials are correct
+- SMTP host and port are correct
+- The worker process is running (`npm run worker`)
 
 ---
 
-# Prisma v7 MariaDB Adapter
+## Production build
 
-Install the MariaDB adapter:
+Build the project:
 
 ```bash
-npm install @prisma/adapter-mariadb
+npm run build
 ```
 
 ---
 
-# Authentication Packages
+## Tech stack
 
-Install password hashing and JWT support:
-
-```bash
-npm install bcrypt jsonwebtoken
-```
-
-These packages provide:
-
-| Package | Purpose |
-| --- | --- |
-| bcrypt | Password hashing |
-| jsonwebtoken | JWT creation and verification |
+- TypeScript
+- Express.js
+- Prisma ORM
+- MySQL
+- BullMQ
+- Redis
+- Paseto authentication
+- AWS S3
+- Nodemailer
+- Zod validation
 
 ---
 
-# Next Steps
+## First-time setup checklist
 
-After completing the above setup:
+- [ ] Install Node.js
 
- 1. Configure environment variables.
- 2. Connect Prisma to MariaDB.
- 3. Create Prisma client singleton.
- 4. Implement User Repository.
- 5. Implement User Service.
- 6. Implement User Controller.
- 7. Create Routes.
- 8. Add Validation Layer.
- 9. Add Global Error Handling.
-10. Add Authentication & Authorization.
-11. Add Logging.
-12. Add Activity Tracking.
-13. Add Role & Permission Management.
+- [ ] Install MySQL
+
+- [ ] Install Redis
+
+- [ ] Clone the repository
+
+- [ ] Run `npm install`
+
+- [ ] Configure `.env`
+
+- [ ] Generate Paseto keys
+
+- [ ] Create the database
+
+- [ ] Run Prisma migrations
+
+- [ ] Seed permissions
+
+- [ ] Seed super admin
+
+- [ ] Start Redis
+
+- [ ] Start the BullMQ worker
+
+- [ ] Start the API server
+
+Once these steps are complete, LeadForge should be operational in your local development environment.
+
+*Author : Saurabh Kumar Jha*

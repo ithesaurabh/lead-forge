@@ -1,156 +1,198 @@
-# LeadForge
+# 🔥LeadForge
 
-LeadForge is a modern Lead Management and Product CRM built with TypeScript, Express, Prisma, MySQL, and Paseto.
+![banner.png](setup/banner.png)&gt; A modern, modular Lead Management & Product CRM built with TypeScript, Express, Prisma, MySQL, Redis, BullMQ, and Paseto.
 
-The platform provides secure authentication, role-based access control (RBAC), lead lifecycle management, product catalog management, category organization, email notifications, and audit-ready architecture designed for scalable business applications.
-
----
-
-## Features
-
-### Authentication & Authorization
-
-* Paseto-based authentication
-* Secure password hashing
-* Access and refresh token support
-* Role-Based Access Control (RBAC)
-* Module-level permissions
-
-### User Management
-
-* Create, update, and manage users
-* Assign roles
-* Activate or deactivate accounts
-* Soft delete support
-
-### Role & Permission Management
-
-* Dynamic role creation
-* Module-based permission assignment
-* Read and write access controls
-
-### Lead Management
-
-* Lead creation and tracking
-* Lead status updates
-* Lead assignment workflows
-* Automated email notifications
-* Lead lifecycle monitoring
-
-### Product Management
-
-* Product catalog management
-* Product image support
-* Product video support
-* Rich HTML product descriptions
-
-### Category Management
-
-* Organize products into categories
-* Category-based product filtering
-
-### Email Notifications
-
-* Thank-you emails
-* Lead status update emails
-* SMTP integration
-* MailHog support for local development
-
-### Audit & Activity Tracking
-
-* Activity logging
-* Audit trail support
-* Change history tracking
+LeadForge is designed to provide businesses with a scalable backend for managing leads, products, categories, users, and role-based access control (RBAC). It follows a clean, modular architecture, making it easy to extend and maintain while remaining production-ready
 
 ---
 
-## Technology Stack
+## ✨ Features
 
-| Layer            | Technology |
-| ---------------- | ---------- |
-| Runtime          | Node.js    |
-| Language         | TypeScript |
-| Framework        | Express.js |
-| Database         | MySQL      |
-| ORM              | Prisma     |
-| Authentication   | Paseto     |
-| Validation       | Zod        |
-| Email            | Nodemailer |
-| Development SMTP | MailHog    |
+### 🔐 Authentication & Authorization
+
+- Paseto-based authentication
+- Role-Based Access Control (RBAC)
+- Permission-based route protection
+- Secure password hashing with bcrypt
+
+### 👥 User Management
+
+- User CRUD operations
+- Role assignment
+- Permission management
+- Super Admin seeding
+
+### 📋 Lead Management
+
+- Create and manage leads
+- Lead status tracking
+- Product association (optional)
+- Automated confirmation emails
+- Lead lifecycle management
+
+### 📦 Product Management
+
+- Product CRUD
+- Category support
+- Product images via AWS S3
+- Redis caching for faster retrieval
+
+### 🗂 Category Management
+
+- Category CRUD
+- Product categorization
+
+### 📧 Email Automation
+
+- Background email processing with BullMQ
+- Non-blocking SMTP integration
+- Queue-based architecture
+- Dedicated email worker
+
+### ☁ File Uploads
+
+- AWS S3 integration
+- Pre-signed upload URLs
+- Folder-based upload organization
+
+### ⚡ Performance
+
+- Redis caching
+- BullMQ job queues
+- Modular service architecture
+
+### 📝 Logging
+
+- Structured logging with Pino
+- HTTP request logging
+- Production-friendly log formatting
+
+### ✅ Validation
+
+- Zod schema validation
+- Request sanitization
+- Centralized error handling
 
 ---
 
-## Project Structure
+# 🛠 Tech Stack
 
-```text
+| Category | Technology |
+| --- | --- |
+| Language | TypeScript |
+| Runtime | Node.js |
+| Framework | Express.js |
+| Database | MySQL |
+| ORM | Prisma |
+| Authentication | Paseto |
+| Queue | BullMQ |
+| Cache | Redis |
+| Storage | AWS S3 |
+| Validation | Zod |
+| Email | Nodemailer |
+
+---
+
+# 📁 Project Structure
+
+```
 src/
-├── app.ts
-├── server.ts
 │
 ├── config/
 ├── constants/
+├── database/
+│   └── seeds/
 ├── middlewares/
+├── modules/
+├── redis/
+│   └── bullmq/
+│   └── cache/
 ├── routes/
-├── shared/
+├── services/
 ├── types/
 ├── utils/
-│
-└── modules/
-    ├── auth/
-    ├── user/
-    ├── role/
-    ├── permission/
-    ├── lead/
-    ├── product/
-    └── category/
+└── app.ts
+└── server.ts
 ```
 
 ---
 
-## Planned Modules
+# 🔒 Security
 
-* [ ] Authentication Module
-* [ ] User Module
-* [ ] Role Module
-* [ ] Permission Module
-* [ ] Lead Module
-* [ ] Product Module
-* [ ] Category Module
-* [ ] Activity Logs
-* [ ] Audit Logs
+- Paseto authentication
+- Password hashing with bcrypt
+- Role-Based Access Control
+- Permission-based authorization
+- Input validation using Zod
+- HTML sanitization
+- Environment-based configuration
+- Secure file uploads with AWS S3
 
 ---
 
-## API Versioning
+# ⚡ Background Jobs
 
-```text
-/api/v1
+LeadForge uses BullMQ with Redis for asynchronous processing.
+
+Current jobs include:
+
+- Welcome emails
+- Lead confirmation emails
+
+This keeps API responses fast while processing email tasks in the background.
+
+---
+
+# 📚 API Modules
+
+- Auth
+- User
+- Roles
+- Permissions
+- Category
+- Product
+- Lead
+- Uploads
+
+Each module follows the same layered structure:
+
+```
+module/
+├── controller
+├── service
+├── repository
+├── validation
+├── routes
+├── types
 ```
 
-Example:
+---
 
-```text
-/api/v1/users
-/api/v1/roles
-/api/v1/permissions
-/api/v1/leads
-/api/v1/products
-/api/v1/categories
-```
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push your branch
+5. Open a Pull Request
+
+Please ensure new features include appropriate validation and follow the existing project structure.
 
 ---
 
-## Development Goals
+## 📬 Contact Author
 
-* Clean Architecture
-* Modular Design
-* Strong Type Safety
-* Production-Ready Security
-* Maintainable Codebase
-* Scalable API Design
+Have questions, suggestions, or want to collaborate? Feel free to reach out.
+
+**Saurabh Jha**
+
+- 📧 Email: [**saurabh.jha.connect@gmail.com**](mailto:saurabh.jha.connect@gmail.com)
+- 🐙 GitHub: [**https://github.com/ithesaurabh**](https://github.com/ithesaurabh)
 
 ---
 
-## License
+## ⭐ Support
 
-This project is licensed under the MIT License.
+If you found this project useful, consider giving it a ⭐ on GitHub. It helps others discover the project and motivates future improvements.
