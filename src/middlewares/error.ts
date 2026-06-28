@@ -3,13 +3,17 @@ import env from "../config/env.js";
 import ApiError from "../utils/ApiError.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { ZodError } from "zod";
+import { writeErrorLog } from "../utils/logger.js";
 
-const errorMiddleware = (
+const errorMiddleware = async (
     err: any,
     _req: Request,
     res: Response,
     _next: NextFunction
 ) => {
+    // cast to any to avoid type incompatibility between different Request types
+    await writeErrorLog(_req as any, err);
+
     if (err instanceof ZodError) {
         err = new ApiError(400, err.issues[0]?.message ?? "Validation failed");
     }

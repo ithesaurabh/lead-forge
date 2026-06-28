@@ -2,6 +2,7 @@
 
 node_modules/
 secrets/
+logs/
 # Build Output
 
 dist/

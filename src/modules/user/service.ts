@@ -92,6 +92,7 @@ const getUser = async ()=>{
 }
 const getOneUser = async (payload : onlyIdDto)=>{
   const user = await userRepository.getOneUser(payload.id);
+  
   return user;
 }
 const deleteUser = async (payload : onlyIdDto)=>{

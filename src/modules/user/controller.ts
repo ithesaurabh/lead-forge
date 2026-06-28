@@ -6,11 +6,12 @@ import ApiError from "../../utils/ApiError.js";
 const getUser = async (req: Request, res: Response) => {
   const user = await userService.getUser();
 
-  if(user.length === 0) {
+  if (user.length === 0) {
     throw new ApiError(404, "No data found");
   }
-  
-  return res.status(200).json({success: true,
+
+  return res.status(200).json({
+    success: true,
     message: "Users fetched successfully",
     data: user,
   });
@@ -18,25 +19,26 @@ const getUser = async (req: Request, res: Response) => {
 
 const getOneUser = async (req: Request<onlyIdDto, {}, {}>, res: Response) => {
   const user = await userService.getOneUser(req.params);
-
-  if(!user){
-    throw new ApiError(401, "User doesn't exist");
+  if (!user) {
+    throw new ApiError(400, "User doesn't exist");
   }
 
-  return res.status(200).json({success: true,
+  return res.status(200).json({
+    success: true,
     message: "User data fetched successfully",
-    data:user
+    data: user
   })
 }
 const deleteUser = async (req: Request<onlyIdDto, {}, {}>, res: Response) => {
   await userService.deleteUser(req.params);
 
-  return res.status(200).json({success: true,
+  return res.status(200).json({
+    success: true,
     message: "User deleted successfully",
   })
 }
 
-const createUser = async (req: Request<{}, {}, CreateUserDto>, res: Response ) => {
+const createUser = async (req: Request<{}, {}, CreateUserDto>, res: Response) => {
   const user = await userService.createUser(req.body);
 
   return res.status(201).json({
@@ -46,7 +48,7 @@ const createUser = async (req: Request<{}, {}, CreateUserDto>, res: Response ) =
   });
 };
 
-const patchUser = async ( req: Request<{}, {}, PatchUserDto>, res: Response ) => {
+const patchUser = async (req: Request<{}, {}, PatchUserDto>, res: Response) => {
   await userService.patchUser(req.body);
 
   return res.status(200).json({
@@ -55,7 +57,7 @@ const patchUser = async ( req: Request<{}, {}, PatchUserDto>, res: Response ) =>
   });
 };
 
-const changePassword = async ( req: Request<{}, {}, ChangePasswordUserDto>, res: Response ) => {
+const changePassword = async (req: Request<{}, {}, ChangePasswordUserDto>, res: Response) => {
   await userService.changePassword(req.body);
 
   return res.status(200).json({
@@ -64,7 +66,7 @@ const changePassword = async ( req: Request<{}, {}, ChangePasswordUserDto>, res:
   });
 };
 
-const updateUser = async ( req: Request<{}, {}, UpdateUserDto>, res: Response ) => {
+const updateUser = async (req: Request<{}, {}, UpdateUserDto>, res: Response) => {
   await userService.udpateUser(req.body);
 
   return res.status(200).json({
