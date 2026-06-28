@@ -48,6 +48,11 @@ const findByIdWithPermissions = async (
 
 const getRoles = async () => {
   return prisma.role.findMany({
+    where: {
+      name: {
+        not: "SUPER ADMIN",
+      },
+    },
     select: {
       id: true,
       name: true,

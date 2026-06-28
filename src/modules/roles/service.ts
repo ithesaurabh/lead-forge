@@ -24,6 +24,10 @@ const createRole = async (payload: CreateRoleDto) => {
 };
 
 const updateRole = async (payload: UpdateRoleDto) => {
+  const SuperAdminRole = await roleRepository.findByName("SUPER ADMIN");
+  if (SuperAdminRole && SuperAdminRole.id === payload.id) {
+    throw new ApiError(400, "Cannot update SUPER ADMIN role");
+  }
   const existingRole = await roleRepository.findById(payload.id);
 
   if (!existingRole) {
