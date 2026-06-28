@@ -49,7 +49,7 @@ const findById = async (id: string) => {
   });
 };
 
-const createLead = async (data: Prisma.LeadCreateInput) => {
+const createLead = async (data: Prisma.LeadUncheckedCreateInput) => {
   return prisma.lead.create({
     data
   });

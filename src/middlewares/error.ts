@@ -11,8 +11,7 @@ const errorMiddleware = async (
     res: Response,
     _next: NextFunction
 ) => {
-    // cast to any to avoid type incompatibility between different Request types
-    await writeErrorLog(_req as any, err);
+    await writeErrorLog(_req, err);
 
     if (err instanceof ZodError) {
         err = new ApiError(400, err.issues[0]?.message ?? "Validation failed");

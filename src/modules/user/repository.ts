@@ -81,7 +81,7 @@ const findById = async (id: string) => {
   });
 };
 
-const createUser = async (data: Prisma.userCreateInput) => {
+const createUser = async (data: Prisma.userUncheckedCreateInput) => {
   return prisma.user.create({
     data
   });

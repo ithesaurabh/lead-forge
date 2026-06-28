@@ -20,6 +20,10 @@ async function seedAdmin() {
           },
         });
 
+        if (!role.id) {
+          throw new Error("Failed to create SUPER ADMIN role");
+        }
+
         console.log("Super Admin role created");
 
         // Fetch all permissions
@@ -38,7 +42,7 @@ async function seedAdmin() {
 
         await tx.rolePermission.createMany({
           data: permissionIds.map((permissionId) => ({
-            roleId: role.id,
+            roleId: role!.id,
             permissionId: permissionId.id,
           })),
         });
