@@ -8,6 +8,9 @@ const app = express();
 app.use(express.json());
 app.use(httpLogger);
 app.use("/api/v1",routes);
+app.get("/health", (req, res) => {
+  res.send("The application version - 1.0.0 is running healthy");
+});
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
